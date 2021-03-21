@@ -1,0 +1,11 @@
+﻿@inherits Finale.WebServer.Mvc.RazorPage
+@{Layout = "~/Views/Shared/_Layout.cshtml";}
+
+<p>This line is from body page</p>
+<p>ViewData value is @ViewData["value"]</p>
+@RenderHtml("<p>This line is rendered as raw html string</p>")
+
+@section scripts{
+    <p>This line is from the "scripts" section.</p>
+    <script>console.log("This script is written from the \"scripts\" section.");</script>
+}
