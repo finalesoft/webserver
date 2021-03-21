@@ -68,6 +68,18 @@ Override the `PreExecute()` and `PostExecute()` methods for implementing logic t
 ### System.Web.Razor reference
 Add `System.Web.Razor v1.0.0.0` to the project referenecs. The version must be v1.0.0.0, and the dll must be copied to the output directory during compilation. Avoid using the built-in MVC functions of Visual Studio, since Visual Studio sometimes replaces the DLL with v2 or v3 and mess up web.config after certain MVC operations.
 
+### web.config
+An optional section can be added to web.config to specify the behavior of razor pages.
+```
+<configSections>
+  <section name="finale.webserver.mvc" type="Finale.WebServer.Mvc.Config"/>
+</configSections>
+<finale.webserver.mvc cacheRazorPages="false" debugRazorPages="true" />
+```
+
+- `cacheRazorPages` specify whether compiled razor pages should be cached in memory. If they are cached, any updates to the underlying file is not reflected until application restart. Enabling this saves compile time if the page is visited frequently. The default is `false`.
+- `debugRazorPages` specify whether debug information is included during razor page compilation. The default is `true`.
+
 ### MVC controllers
 For controllers that render views, they should inherit from `Finale.WebServer.Mvc.MvcController` instead.
 
@@ -102,9 +114,11 @@ To use a view with a model, use the generic version of the baseclass:
 @inherits Finale.WebServer.Mvc.RazorPage<System.Collections.Generic.List<string>>
 ```
 
-- To specify the layout page, set the Layout property at the top of the view.
-- To define sections, use the `@section` directive.
+The operations on the page are similar to the standard framework:
+- To specify the layout page, set the Layout property at the top of the view. To render the body section in the layout page, use `@RenderBody()`.
+- To define sections, use the `@section` directive. To render sections, use `RenderSection({name})`.
 - To render strings directly to the page as HTML (i.e. without encoding), use `@RenderHtml()`
+- To add `using` statements to the C# portion of the page, use `@using {namespace}`.
 
 ```
 @inherits Finale.WebServer.Mvc.RazorPage
